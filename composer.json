@@ -1,0 +1,33 @@
+{
+    "_-x-vim-formatting": " vim: set ft=javascript ts=4 sw=4 et : ",
+
+    "name": "vend/pheat",
+    "description": "Feature manager",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vend Devteam",
+            "email": "devteam@vendhq.com"
+        }
+    ],
+
+    "require": {
+        "php":     ">=5.4.0",
+        "psr/log": "~1.0.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.3"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "Pheat\\": "src"
+        }
+    }
+
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.0.x-dev",
+        }
+    },
+}
