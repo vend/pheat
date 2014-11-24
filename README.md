@@ -10,8 +10,8 @@ Pheat uses PSR4 for autoloading. It's available as `vend/pheat` on Packagist.
 #### Checking for Features
 
 The main instance you'll use for feature management is the `Pheat\Manager`. At
-its simplest, the manager tells you whether a feature should be enabled or
-disabled:
+its simplest, the manager tells you whether a feature should be active or
+inactive:
 
 ```php
 if ($manager->resolve('fancy_graphics')) {
