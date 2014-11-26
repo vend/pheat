@@ -91,7 +91,10 @@ abstract class Test extends PHPUnit_Framework_TestCase
      */
     protected function getManager()
     {
-        $manager = new Manager();
+        $manager = $this->getMockBuilder('Pheat\Manager')
+            ->setMethods(['getProviders'])
+            ->getMock();
+
         $manager->setLogger($this->logger);
 
         return $manager;

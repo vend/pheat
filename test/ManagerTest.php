@@ -23,13 +23,14 @@ class ManagerTest extends Test
         $manager->addProvider(new \stdClass());
     }
 
-    /**
-     * @expectedException \PHPUnit_Framework_Error
-     */
     public function testAddProviderNonInt()
     {
+        $provider = $this->getMockProvider();
+
         $manager = $this->getManager();
-        $manager->addProvider($this->getMockProvider(), 'some string');
+        $manager->addProvider($provider, 'some string');
+
+        $this->assertEquals([$provider], $this->getObjectAttribute($manager, 'providers'));
     }
 
     /**

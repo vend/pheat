@@ -82,6 +82,8 @@ class Manager implements LoggerAwareInterface
             throw new LockedException('The feature manager has already asked its providers for features - changes will not be reflected');
         }
 
+        $index = (int)$index;
+
         if ($index === -1) {
             array_push($this->providers, $provider);
         } else {
