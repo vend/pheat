@@ -1,7 +1,18 @@
 <?php
 
-namespace Pheat\Status;
+namespace Pheat;
 
+/**
+ * Constants and helper strings for status values
+ *
+ * Status values are either true, false or null. Their meanings are as you'll find
+ * in the class constants below. If you want to distinguish between features that
+ * are Strongly-Inactive(tm) and merely 'unknown', then you'll want to use PHP's
+ * strict (===) comparison operator.
+ *
+ * But in most cases, you want unknown features treated as off. For that, you can
+ * just use regular old boolean comparisons. (null is falsish, don't ya know)
+ */
 class Status
 {
     /**

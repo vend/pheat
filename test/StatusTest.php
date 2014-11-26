@@ -1,6 +1,6 @@
 <?php
 
-namespace Pheat\Status;
+namespace Pheat;
 
 use Pheat\Test\Test;
 
@@ -16,8 +16,8 @@ class StatusTest extends Test
 
     public function testMessageAccess()
     {
-        $this->assertEquals('unknown', Status::$message[Status::UNKNOWN], 'Unknown message');
-        $this->assertEquals('active', Status::$message[Status::ACTIVE], 'Active message');
-        $this->assertEquals('inactive', Status::$message[Status::INACTIVE], 'Inactive message');
+        $this->assertEquals('unknown', Status::$messages[Status::UNKNOWN], 'Unknown message');
+        $this->assertEquals('active', Status::$messages[Status::ACTIVE], 'Active message');
+        $this->assertEquals('inactive', Status::$messages[Status::INACTIVE], 'Inactive message');
     }
 }
