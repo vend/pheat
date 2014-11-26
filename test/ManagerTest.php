@@ -50,12 +50,12 @@ class ManagerTest extends Test
         $manager->addProvider($second, 1);
         $manager->addProvider($fourth, -1);
 
-        $resolved = $manager->resolveAll();
-        $this->assertInternalType('array', $resolved);
+        $set = $manager->getFeatureSet();
+        $this->assertInstanceOf('Pheat\Feature\Set', $set);
 
-        $this->assertEquals($first, $resolved['1']->getProvider());
-        $this->assertEquals($second, $resolved['2']->getProvider());
-        $this->assertEquals($third, $resolved['3']->getProvider());
-        $this->assertEquals($fourth, $resolved['4']->getProvider());
+        $this->assertEquals($first, $set->getFeature('1')->getProvider());
+        $this->assertEquals($second, $set->getFeature('2')->getProvider());
+        $this->assertEquals($third, $set->getFeature('3')->getProvider());
+        $this->assertEquals($fourth, $set->getFeature('4')->getProvider());
     }
 }
