@@ -2,13 +2,19 @@
 
 namespace Pheat\Provider;
 
-use Pheat\Context;
+use Pheat\Feature\Feature;
 
 interface ProviderInterface
 {
     /**
-     * @param string $feature
-     * @return Status
+     * Providers must have a unique name
+     *
+     * @return string
      */
-    public function getStatus($feature, Context $context);
+    public function getName();
+
+    /**
+     * @return Feature[]
+     */
+    public function getFeatures();
 }

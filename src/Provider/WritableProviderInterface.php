@@ -4,5 +4,5 @@ namespace Pheat\Provider;
 
 interface WritableProviderInterface
 {
-    public function setStatus($feature, Context $context);
+    public function setStatus(Feature $feature, Status $status);
 }
