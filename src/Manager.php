@@ -7,7 +7,6 @@ use Pheat\Exception\LockedException;
 use Pheat\Feature\FeatureInterface;
 use Pheat\Feature\NullFeature;
 use Pheat\Provider\ProviderInterface;
-use Pheat\Status\Status;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
@@ -27,14 +26,14 @@ class Manager implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     /**
-     * @var array<int,ProviderInterface>
+     * @var array<ProviderInterface>
      */
     protected $providers = [];
 
     /**
-     * @var array<string,array<string,Pheat\Feature\FeatureInterface>>
+     * @var array<FeatureInterface> Indexed by string
      */
-    protected $features = [];
+    protected $features = null;
 
     /**
      * @var ContextInterface
@@ -54,10 +53,10 @@ class Manager implements LoggerAwareInterface
      * @param ContextInterface $context
      * @param array            $providers
      */
-    public function __construct(ContextInterface $context, array $providers = [])
+    public function __construct(ContextInterface $context = null, array $providers = [])
     {
         $this->logger  = new NullLogger();
-        $this->context = $context;
+        $this->context = $context ?: new Context();
 
         // Iterate in order to type-check and ensure ordering
         foreach ($providers as $provider) {
@@ -86,7 +85,7 @@ class Manager implements LoggerAwareInterface
         if ($index === -1) {
             array_push($this->providers, $provider);
         } else {
-            $this->providers[(int)$index] = $provider;
+            array_splice($this->providers, $index, 0, [$provider]);
         }
     }
 
@@ -100,16 +99,33 @@ class Manager implements LoggerAwareInterface
      */
     public function resolve($name)
     {
-        $this->lock();
-        $this->resolveAll();
+        $feature = $this->resolveFeature($name);
+
+        if (!$feature) {
+            $feature = NullFeature::get();
+        }
 
         return $this->returnStatusFromFeature(
-            isset($this->features[$name]) ? $this->features[$name] : new NullFeature()
+            $feature
         );
     }
 
     /**
-     * Resolves features from the feature providers
+     * Returns the deciding feature (with associated provider)
+     *
+     * @param string $name
+     * @return FeatureInterface
+     */
+    public function resolveFeature($name)
+    {
+        $this->lock();
+        $this->resolveAll();
+
+        return isset($this->features[$name]) ? $this->features[$name] : NullFeature::get();
+    }
+
+    /**
+     * Resolves all features from the feature providers
      *
      * Idempotent and memoized to run only once. If you need to resolve again,
      * get a new Manager instance.
@@ -126,17 +142,55 @@ class Manager implements LoggerAwareInterface
                 try {
                     $features = $provider->getFeatures($this->context);
                 } catch (Exception $e) {
-                    // If an uncaught exception is thrown from a provider, we assume it answered 'unknown' for all known features.
+                    $this->logger->error('Feature provider {provider} threw exception on status resolution: {exception}', [
+                        'provider'  => $provider->getName(),
+                        'exception' => $e
+                    ]);
+
+                    // If an uncaught exception is thrown from a provider, we assume
+                    // it answered 'unknown' for all known features.
                     continue;
                 }
 
-                foreach ($features as $feature) {
-                    $this->resolveFeature($feature);
+                if (!is_array($features)) {
+                    $this->logger->error('Feature provider {provider} did not provide an array of features', [
+                        'provider' => $provider->getName()
+                    ]);
+                    continue;
                 }
+
+                $this->mergeFeatures($features);
             }
         }
 
         return $this->features;
+    }
+
+    /**
+     * Merges the given features into the current feature state
+     *
+     * @param array<FeatureInterface> $features
+     */
+    protected function mergeFeatures(array $features)
+    {
+        /** @var FeatureInterface $feature */
+        foreach ($features as $feature) {
+            $name = $feature->getName();
+
+            if (!isset($this->features[$name])) {
+                $this->features[$name] = NullFeature::get();
+            }
+
+            $was = $this->features[$name];
+            $this->features[$name] = $feature->resolve($this->features[$name]);
+
+            $this->logger->debug('Merging {feature} from {provider}, {was} -> {new}', [
+                'feature'  => $name,
+                'provider' => $feature->getProvider()->getName(),
+                'was'      => Status::$messages[$was->getStatus()],
+                'new'      => Status::$messages[$this->features[$name]->getStatus()]
+            ]);
+        }
     }
 
     /**
@@ -149,11 +203,17 @@ class Manager implements LoggerAwareInterface
         $this->context = clone $this->context;
     }
 
+    /**
+     * Given a feature, resolves a status, reports on it and returns it
+     *
+     * @param FeatureInterface $feature
+     * @return bool|null
+     */
     protected function returnStatusFromFeature(FeatureInterface $feature)
     {
         $status = $feature->getStatus();
 
-        $this->logger->info('Feature {feature} returned as {status} due to {provider}', [
+        $this->logger->info('Feature {feature} returned as {status} due to {provider} provider', [
             'feature'  => $feature->getName(),
             'status'   => Status::$messages[$status],
             'provider' => $feature->getProvider()->getName()
