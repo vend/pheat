@@ -3,9 +3,16 @@ imports:
     - php
 
 filter:
+    # Trailing slash is converted to /*
     excluded_paths:
         - test/
+        - build/
 
 tools:
-    external_code_coverage: true
-    php_analyzer: true
+    # Inherited:
+    # php_analyzer
+    # php_pdepend
+    # php_sim
+
+    external_code_coverage:
+        timeout: 600
