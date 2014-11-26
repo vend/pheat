@@ -3,14 +3,18 @@
 namespace Pheat\Feature;
 
 use Pheat\Provider\ProviderInterface;
-use Pheat\Status\Status;
+use Pheat\Status;
 
 /**
- * Default feature implementation
+ * Simple boolean feature implementation
+ *
+ * You might like to use this default implementation of the feature value object,
+ * rather than implement FeatureInterface. This implementation provides simple
+ * 'inactive trumps active, unknown ignores the provider' default logic.
  *
  * The feature class is responsible for the merge-down when multiple providers give
  * information about the same feature. The default behaviour with regard to unknown
- * features can be changed by reimplementing the resolve method.
+ * features can be changed by reimplementing the resolve method in a subclass.
  */
 class Feature implements FeatureInterface
 {

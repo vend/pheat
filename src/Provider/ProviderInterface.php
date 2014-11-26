@@ -2,8 +2,17 @@
 
 namespace Pheat\Provider;
 
-use Pheat\Feature\Feature;
+use Pheat\ContextInterface;
+use Pheat\Feature\FeatureInterface;
 
+/**
+ * Provider
+ *
+ * A feature provider is given a context by the manager. It uses it
+ * to determine a list of features, and their enclosed statuses.
+ *
+ * This list is given back to the manager for the final merge-down resolution
+ */
 interface ProviderInterface
 {
     /**
@@ -14,7 +23,8 @@ interface ProviderInterface
     public function getName();
 
     /**
-     * @return Feature[]
+     * @param ContextInterface $context
+     * @return FeatureInterface[]
      */
-    public function getFeatures();
+    public function getFeatures(ContextInterface $context);
 }

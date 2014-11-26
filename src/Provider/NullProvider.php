@@ -2,24 +2,16 @@
 
 namespace Pheat\Provider;
 
-use Pheat\Feature\FeatureInterface;
+use Pheat\ContextInterface;
 
 class NullProvider implements ProviderInterface
 {
-    /**
-     * Providers must have a unique name
-     *
-     * @return string
-     */
     public function getName()
     {
         return 'null';
     }
 
-    /**
-     * @return FeatureInterface[]
-     */
-    public function getFeatures()
+    public function getFeatures(ContextInterface $context)
     {
         return [];
     }
