@@ -19,7 +19,18 @@ use Traversable;
  */
 class Context implements ContextInterface, ArrayAccess, IteratorAggregate
 {
-    protected $attributes;
+    /**
+     * @var array
+     */
+    protected $attributes = [];
+
+    /**
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        $this->attributes = $attributes;
+    }
 
     public function set($key, $value)
     {
