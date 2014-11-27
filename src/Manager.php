@@ -193,9 +193,9 @@ class Manager implements LoggerAwareInterface
     /**
      * Validates that the response from the provider is a set of features
      *
-     * @param array                             $features Could be mixed type, validating. Don't type hint this parameter.
+     * @param FeatureInterface[]|mixed          $features Could be mixed type, validating. Don't type hint this parameter.
      * @param \Pheat\Provider\ProviderInterface $provider
-     * @return array
+     * @return FeatureInterface[]
      */
     protected function validateFeatureArray($features, ProviderInterface $provider)
     {
