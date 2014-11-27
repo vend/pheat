@@ -40,6 +40,8 @@ Most of the time, if nothing is known about a feature, you don't want to enable 
 
 If you call the manager's `resolveFeature` method you'll receive a `FeatureInterface` instance (rather than a status value). This can be helpful if you need to know *why* a feature is active, because it can tell you which provider is marking it as active.
 
+This is also where you'd implement *variants*, *ratios* or *buckets*: more complex ways of assigning features. The `FeatureInterface` ensures the information about why a feature is active or inactive can be interrogated in more detail.
+
 ## Configuration
 
 ### Manager
