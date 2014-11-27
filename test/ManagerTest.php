@@ -40,10 +40,10 @@ class ManagerTest extends Test
     {
         $manager = $this->getManager();
 
-        $first = $this->getMockProvider('first', ['1' => true, '2' => true, '3' => true, '4' => true]);
-        $second = $this->getMockProvider('second', ['2' => true, '3' => true, '4' => true]);
-        $third = $this->getMockProvider('third', ['3' => true, '4' => true]);
-        $fourth = $this->getMockProvider('fourth', ['4' => true]);
+        $first  = $this->getMockProvider('first',  ['1' => Status::ACTIVE, '2' => Status::ACTIVE, '3' => Status::ACTIVE, '4' => Status::INACTIVE]);
+        $second = $this->getMockProvider('second', ['2' => Status::ACTIVE, '3' => Status::ACTIVE, '4' => Status::ACTIVE]);
+        $third  = $this->getMockProvider('third',  ['3' => Status::ACTIVE, '4' => Status::ACTIVE]);
+        $fourth = $this->getMockProvider('fourth', ['4' => Status::ACTIVE]);
 
         $manager->addProvider($first);
         $manager->addProvider($third);
@@ -57,5 +57,40 @@ class ManagerTest extends Test
         $this->assertEquals($second, $set->getFeature('2')->getProvider());
         $this->assertEquals($third, $set->getFeature('3')->getProvider());
         $this->assertEquals($fourth, $set->getFeature('4')->getProvider());
+
+        return $manager;
+    }
+
+    /**
+     * @depends testProviderOrdering
+     */
+    public function testResolveBoolean($manager)
+    {
+        $this->assertTrue($manager->resolve('1'));
+        $this->assertTrue($manager->resolve('2'));
+        $this->assertTrue($manager->resolve('3'));
+        $this->assertFalse($manager->resolve('4'));
+        $this->assertNull($manager->resolve('unknown_feature'));
+    }
+
+    public function testBadProvider()
+    {
+        $manager = $this->getManager();
+
+        $bad = $this->getMockBuilder('Pheat\Provider\NullProvider')
+            ->setMethods(['getFeatures'])
+            ->getMock();
+
+        $bad->expects($this->atLeastOnce())
+            ->method('getFeatures')
+            ->with($this->isInstanceOf('Pheat\ContextInterface'))
+            ->will($this->throwException(new \Exception('The provider could not retrieve feature information')));
+
+        $manager->addProvider($this->getMockProvider('good', ['working' => true]));
+        $manager->addProvider($bad);
+        $manager->addProvider($this->getMockProvider('good2', ['continues' => true]));
+
+        $this->assertTrue($manager->resolve('working'));
+        $this->assertTrue($manager->resolve('continues'));
     }
 }

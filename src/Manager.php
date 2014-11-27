@@ -114,6 +114,7 @@ class Manager implements LoggerAwareInterface
     public function getFeatureSet()
     {
         if ($this->features === null) {
+
             $this->features = $this->createFeatureSet();
         }
 

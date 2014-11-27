@@ -66,14 +66,14 @@ class Feature implements FeatureInterface
      */
     public function resolve(FeatureInterface $previous)
     {
-        if ($this->status === Status::INACTIVE && $previous->getStatus() !== Status::INACTIVE) {
+        $status = $previous->getStatus();
+
+        if ($status === Status::INACTIVE || $this->status === Status::UNKNOWN) {
+            return $previous;
+        } elseif ($this->status === Status::INACTIVE || $status === Status::UNKNOWN) {
             return $this;
         }
 
-        if ($this->status === Status::UNKNOWN || $previous->getStatus() === Status::ACTIVE) {
-            return $previous;
-        }
-
-        return $this;
+        return $previous;
     }
 }
