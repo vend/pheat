@@ -2,9 +2,9 @@
 
 namespace Pheat\Feature;
 
+use Pheat\Exception\NullException;
 use Pheat\Provider\NullProvider;
 use Pheat\Provider\ProviderInterface;
-use RuntimeException;
 
 /**
  * Used as a null object where no information is known about a feature being resolved
@@ -44,6 +44,6 @@ class NullFeature extends Feature
 
     public function resolve(FeatureInterface $previous)
     {
-        throw new RuntimeException('Cannot resolve a null feature');
+        throw new NullException('Cannot resolve a null feature');
     }
 }

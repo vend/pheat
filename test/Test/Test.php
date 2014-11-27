@@ -2,6 +2,7 @@
 
 namespace Pheat\Test;
 
+use Pheat\Exception\TestException;
 use Pheat\Feature\FeatureInterface;
 use Pheat\Manager;
 use Pheat\Provider\ProviderInterface;
@@ -15,6 +16,8 @@ use Psr\Log\LoggerAwareTrait;
 abstract class Test extends PHPUnit_Framework_TestCase
 {
     use LoggerAwareTrait;
+
+    const SUT = null;
 
     /**
      * @var Settings
@@ -36,6 +39,16 @@ abstract class Test extends PHPUnit_Framework_TestCase
         }
 
         $this->logger = self::$settings->getLogger();
+    }
+
+    protected function getSut(/* ... */)
+    {
+        if (!static::SUT) {
+            throw new TestException('Invalid system-under-test class');
+        }
+
+        $reflection = new \ReflectionClass(static::SUT);
+        return $reflection->newInstanceArgs(func_get_args());
     }
 
     /**

@@ -5,7 +5,6 @@ namespace Pheat;
 use Exception;
 use Pheat\Exception\LockedException;
 use Pheat\Feature\FeatureInterface;
-use Pheat\Feature\NullFeature;
 use Pheat\Feature\Set as FeatureSet;
 use Pheat\Provider\ProviderInterface;
 use Psr\Log\LoggerAwareInterface;

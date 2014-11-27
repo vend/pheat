@@ -55,15 +55,6 @@ class Feature implements FeatureInterface
         return $this->provider;
     }
 
-    /**
-     * Performs the merge down
-     *
-     * Will be called with another feature instance that implements the
-     * same feature.
-     *
-     * @param FeatureInterface $previous
-     * @return $this|FeatureInterface
-     */
     public function resolve(FeatureInterface $previous)
     {
         $status = $previous->getStatus();

@@ -15,14 +15,15 @@ class FeatureTest extends Test
         [Status::INACTIVE, Status::ACTIVE]
     ];
 
-
-    public function testResolutionInactiveBeatsActive()
+    public function testResolution()
     {
+        $sut = static::SUT;
+
         foreach ($this->ordering as $case) {
             list($expected, $other) = $case; // TODO PHP5.5
 
-            $previous = new Feature('foo', $expected, $this->getMockProvider('foo'));
-            $new      = new Feature('foo', $other,    $this->getMockProvider('bar'));
+            $previous = new $sut('foo', $expected, $this->getMockProvider('foo'));
+            $new      = new $sut('foo', $other,    $this->getMockProvider('bar'));
 
             $value = $new->resolve($previous);
 
@@ -33,8 +34,8 @@ class FeatureTest extends Test
             );
 
             // Commutative
-            $previous = new Feature('foo', $other,    $this->getMockProvider('foo'));
-            $new      = new Feature('foo', $expected, $this->getMockProvider('bar'));
+            $previous = new $sut('foo', $other,    $this->getMockProvider('foo'));
+            $new      = new $sut('foo', $expected, $this->getMockProvider('bar'));
 
             $this->assertEquals(
                 $new,

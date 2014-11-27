@@ -40,6 +40,10 @@ class Set implements LoggerAwareInterface
         }
     }
 
+    /**
+     * @param string $name
+     * @return \Pheat\Feature\FeatureInterface
+     */
     public function getFeature($name)
     {
         return isset($this->features[$name]) ? $this->features[$name] : NullFeature::get();
