@@ -159,7 +159,11 @@ class Manager implements LoggerAwareInterface
         $set = new FeatureSet();
 
         foreach ($this->providers as $provider) {
-            $features = $this->getFeaturesFromProvider($provider);
+            $features = $this->validateFeatureArray(
+                $this->getFeaturesFromProvider($provider),
+                $provider
+            );
+
             $set->mergeFeatures($features);
         }
 
@@ -172,6 +176,8 @@ class Manager implements LoggerAwareInterface
      */
     protected function getFeaturesFromProvider(ProviderInterface $provider)
     {
+        $features = [];
+
         try {
             $features = $provider->getFeatures($this->context);
         } catch (Exception $e) {
@@ -179,16 +185,25 @@ class Manager implements LoggerAwareInterface
                 'provider'  => $provider->getName(),
                 'exception' => $e
             ]);
-
-            // If an uncaught exception is thrown from a provider, we assume
-            // it answered 'unknown' for all known features.
-            return [];
         }
 
+        return $features;
+    }
+
+    /**
+     * Validates that the response from the provider is a set of features
+     *
+     * @param array                             $features Could be mixed type, validating. Don't type hint this parameter.
+     * @param \Pheat\Provider\ProviderInterface $provider
+     * @return array
+     */
+    protected function validateFeatureArray($features, ProviderInterface $provider)
+    {
         if (!is_array($features)) {
             $this->logger->error('Feature provider {provider} did not provide an array of features', [
                 'provider' => $provider->getName()
             ]);
+
             return [];
         }
 
