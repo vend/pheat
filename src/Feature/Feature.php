@@ -68,12 +68,10 @@ class Feature implements FeatureInterface
     {
         $status = $previous->getStatus();
 
-        if ($status === Status::INACTIVE || $this->status === Status::UNKNOWN) {
+        if ($status === Status::INACTIVE || $this->status === Status::UNKNOWN || $status === $this->status) {
             return $previous;
-        } elseif ($this->status === Status::INACTIVE || $status === Status::UNKNOWN) {
-            return $this;
         }
 
-        return $previous;
+        return $this;
     }
 }

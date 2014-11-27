@@ -73,9 +73,28 @@ $manager->addProvider(new My\Custom\Provider())
 
 Providers are kept and processed in an ordered list (so the order in which you call `addProvider` does matter).
 
+#### Feature
 
+The `Feature` object holds the status for a named feature. It also holds a reference to the provider which gave the information about the feature.
 
+##### `::resolve()`
 
+When two or more providers give information about the same feature (according to the feature name), their statuses are merged to find the provider which should 'win' (and control the final value of whether the feature is enabled.) This is done by passing the previously controlling feature into the 'new' feature to be merged's `resolve()` method.
 
+The `resolve()` method returns the `Feature` instance that should now be considered in control. This makes it a good place to implement complex logic, like enabling a feature for a ratio or sample of users.
 
+###### Default Resolution
 
+When two features are resolved together, in the default implementation, the `Feature` that will end up controlling the status is shown in bold.
+
+Previous Status | New Status
+------------ | -------------
+**Active**   | Active
+Active       | **Inactive**
+**Active**   | Unknown
+**Inactive** | Active
+**Inactive** | Inactive
+**Inactive** | Unknown
+Unknown      | **Active**
+Unknown      | **Inactive**
+**Unknown**  | Unknown
