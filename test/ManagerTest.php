@@ -2,6 +2,7 @@
 
 namespace Pheat;
 
+use Pheat\Provider\ProviderInterface;
 use Pheat\Test\Test;
 
 class ManagerTest extends Test
@@ -64,7 +65,7 @@ class ManagerTest extends Test
     /**
      * @depends testProviderOrdering
      */
-    public function testResolveBoolean($manager)
+    public function testResolveBoolean(Manager $manager)
     {
         $this->assertTrue($manager->resolve('1'));
         $this->assertTrue($manager->resolve('2'));
@@ -73,24 +74,52 @@ class ManagerTest extends Test
         $this->assertNull($manager->resolve('unknown_feature'));
     }
 
-    public function testBadProvider()
+    public function testBadProviderException()
     {
-        $manager = $this->getManager();
-
         $bad = $this->getMockBuilder('Pheat\Provider\NullProvider')
-            ->setMethods(['getFeatures'])
-            ->getMock();
+                             ->setMethods(['getFeatures'])
+                             ->getMock();
+
+        $bad->expects($this->atLeastOnce())
+                     ->method('getFeatures')
+                     ->with($this->isInstanceOf('Pheat\ContextInterface'))
+                     ->will($this->throwException(new \Exception('The provider could not retrieve feature information')));
+
+        $this->assertBadProviderHandled($bad, 'Provider that throws exception handled correctly');
+    }
+
+    public function testBadProviderType()
+    {
+        $bad = $this->getMockBuilder('Pheat\Provider\NullProvider')
+                    ->setMethods(['getFeatures'])
+                    ->getMock();
 
         $bad->expects($this->atLeastOnce())
             ->method('getFeatures')
             ->with($this->isInstanceOf('Pheat\ContextInterface'))
-            ->will($this->throwException(new \Exception('The provider could not retrieve feature information')));
+            ->will($this->returnValue('a string? for an array of features? yeah, that will cause problems'));
+
+        $this->assertBadProviderHandled($bad, 'Provider that does not return array for features handled correctly');
+    }
+
+    /**
+     * @depends testProviderOrdering
+     * @expectedException \Pheat\Exception\LockedException
+     */
+    public function testLocking(Manager $manager)
+    {
+        $manager->addProvider($this->getMockProvider());
+    }
+
+    protected function assertBadProviderHandled(ProviderInterface $bad, $message = '')
+    {
+        $manager = $this->getManager();
 
         $manager->addProvider($this->getMockProvider('good', ['working' => true]));
         $manager->addProvider($bad);
         $manager->addProvider($this->getMockProvider('good2', ['continues' => true]));
 
-        $this->assertTrue($manager->resolve('working'));
-        $this->assertTrue($manager->resolve('continues'));
+        $this->assertTrue($manager->resolve('working'), $message);
+        $this->assertTrue($manager->resolve('continues'), $message);
     }
 }
