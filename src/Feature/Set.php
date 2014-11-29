@@ -50,6 +50,14 @@ class Set implements LoggerAwareInterface
     }
 
     /**
+     * @return FeatureInterface[]
+     */
+    public function getAll()
+    {
+        return $this->features;
+    }
+
+    /**
      * Merges a single feature into the current set
      *
      * @param \Pheat\Feature\FeatureInterface $feature

@@ -113,11 +113,18 @@ class Manager implements LoggerAwareInterface
     public function getFeatureSet()
     {
         if ($this->features === null) {
-
             $this->features = $this->createFeatureSet();
         }
 
         return $this->features;
+    }
+
+    /**
+     * @return ContextInterface
+     */
+    public function getContext()
+    {
+        return $this->context;
     }
 
     /**
