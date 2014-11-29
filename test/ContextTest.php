@@ -52,4 +52,11 @@ class ContextTest extends Test
             $this->assertEquals('bar', $value);
         }
     }
+
+    protected function getSut(array $attributes = [])
+    {
+        $sut = parent::getSut();
+        $sut->setAll($attributes);
+        return $sut;
+    }
 }

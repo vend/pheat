@@ -24,14 +24,6 @@ class Context implements ContextInterface, ArrayAccess, IteratorAggregate
      */
     protected $attributes = [];
 
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        $this->attributes = $attributes;
-    }
-
     public function set($key, $value)
     {
         $this->attributes[$key] = $value;
