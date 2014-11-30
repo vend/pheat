@@ -111,6 +111,23 @@ class ManagerTest extends Test
         $manager->addProvider($this->getMockProvider());
     }
 
+    public function testGetContext()
+    {
+        $context = new Context();
+        $manager = $this->getManager($context);
+        $this->assertEquals($context, $manager->getContext());
+    }
+
+    public function testGetProviders()
+    {
+        $providers = [
+            $this->getMockProvider('a'),
+            $this->getMockProvider('b')
+        ];
+        $manager = $this->getManager(null, $providers);
+        $this->assertEquals($providers, $manager->getProviders());
+    }
+
     protected function assertBadProviderHandled(ProviderInterface $bad, $message = '')
     {
         $manager = $this->getManager();

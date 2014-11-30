@@ -128,6 +128,14 @@ class Manager implements LoggerAwareInterface
     }
 
     /**
+     * @return ProviderInterface[]
+     */
+    public function getProviders()
+    {
+        return $this->providers;
+    }
+
+    /**
      * Prevents further changes to the context, now that we're about to freeze
      * the feature manager's responses from the providers.
      */

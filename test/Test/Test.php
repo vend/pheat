@@ -2,6 +2,7 @@
 
 namespace Pheat\Test;
 
+use Pheat\ContextInterface;
 use Pheat\Exception\TestException;
 use Pheat\Feature\FeatureInterface;
 use Pheat\Manager;
@@ -102,10 +103,11 @@ abstract class Test extends PHPUnit_Framework_TestCase
     /**
      * @return Manager
      */
-    protected function getManager()
+    protected function getManager(ContextInterface $context = null, array $providers = [])
     {
         $manager = $this->getMockBuilder('Pheat\Manager')
-            ->setMethods(['getProviders'])
+            ->setConstructorArgs([$context, $providers])
+            ->setMethods(null)
             ->getMock();
 
         $manager->setLogger($this->logger);
