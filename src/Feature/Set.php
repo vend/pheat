@@ -17,7 +17,16 @@ class Set implements LoggerAwareInterface
     /**
      * @var FeatureInterface[]
      */
-    protected $features = [];
+    protected $canonical = [];
+
+    /**
+     * A multidimensional array of all encountered features
+     *
+     * The first level is indexed by feature name, and the second by provider name.
+     *
+     * @var array<string,array<string,FeatureInterface>>
+     */
+    protected $all = [];
 
     /**
      * Constructor
@@ -36,7 +45,8 @@ class Set implements LoggerAwareInterface
     {
         /** @var FeatureInterface $feature */
         foreach ($features as $feature) {
-            $this->mergeFeature($feature);
+            $this->storeToAll($feature);
+            $this->storeToCanonical($feature);
         }
     }
 
@@ -46,36 +56,61 @@ class Set implements LoggerAwareInterface
      */
     public function getFeature($name)
     {
-        return isset($this->features[$name]) ? $this->features[$name] : NullFeature::get();
+        return isset($this->canonical[$name]) ? $this->canonical[$name] : NullFeature::get();
     }
 
     /**
      * @return FeatureInterface[]
      */
-    public function getAll()
+    public function getAllCanonical()
     {
-        return $this->features;
+        return $this->canonical;
     }
 
     /**
-     * Merges a single feature into the current set
-     *
-     * @param \Pheat\Feature\FeatureInterface $feature
+     * @return array<string,array<string,FeatureInterface>>
      */
-    protected function mergeFeature(FeatureInterface $feature)
+    public function getAll()
+    {
+        return $this->all;
+    }
+
+    /**
+     * Stores the given feature to the array of all encountered features
+     *
+     * @param FeatureInterface $feature
+     */
+    protected function storeToAll(FeatureInterface $feature)
     {
         $name = $feature->getName();
 
-        $was = $this->getFeature($name);
-        $new = $feature->resolve($was);
+        if (!isset($this->all[$name])) {
+            $this->all[$name] = [];
+        }
 
-        $this->features[$name] = $new;
+        $this->all[$name][$feature->getProvider()->getName()] = $feature;
+    }
 
-        $this->logger->debug('Merging {feature} from {provider}, {was} -> {new}', [
-            'feature'  => $name,
-            'provider' => $feature->getProvider()->getName(),
-            'was'      => Status::$messages[$was->getStatus()],
-            'new'      => Status::$messages[$this->features[$name]->getStatus()]
-        ]);
+    /**
+     * Conditionally marks a feature instance as canonical for a name
+     *
+     * @param FeatureInterface $feature
+     */
+    protected function storeToCanonical(FeatureInterface $feature)
+    {
+        $name = $feature->getName();
+        $was  = $this->getFeature($name);
+        $new  = $feature->resolve($was);
+
+        $this->canonical[$name] = $new;
+
+        if ($was !== $new) {
+            $this->logger->debug('New canonical feature: {feature} from {provider}, {was} -> {new}', [
+                'feature'  => $name,
+                'provider' => $feature->getProvider()->getName(),
+                'was'      => Status::$messages[$was->getStatus()],
+                'new'      => Status::$messages[$this->canonical[$name]->getStatus()]
+            ]);
+        }
     }
 }
