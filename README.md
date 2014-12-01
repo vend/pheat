@@ -2,7 +2,12 @@
 
 ## PHP 5.4+ Feature Manager
 
-[![Build Status](https://travis-ci.org/vend/pheat.svg?branch=master)](https://travis-ci.org/vend/pheat) [![Code Coverage](https://scrutinizer-ci.com/g/vend/pheat/badges/coverage.png?b=master&s=704647138ef760ac320f01d0eb40231f9a4082c3)](https://scrutinizer-ci.com/g/vend/pheat/?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/vend/pheat/badges/quality-score.png?b=master&s=7f41f355e36b0f7a733a6291ecac525abc752ed8)](https://scrutinizer-ci.com/g/vend/pheat/?branch=master) [![Latest Stable Version](https://poser.pugx.org/vend/pheat/v/stable.svg)](https://packagist.org/packages/vend/pheat) [![Latest Unstable Version](https://poser.pugx.org/vend/pheat/v/unstable.svg)](https://packagist.org/packages/vend/pheat) [![License](https://poser.pugx.org/vend/pheat/license.svg)](https://packagist.org/packages/vend/pheat)
+[![Build Status](https://travis-ci.org/vend/pheat.svg?branch=master)](https://travis-ci.org/vend/pheat)
+[![Code Coverage](https://scrutinizer-ci.com/g/vend/pheat/badges/coverage.png?b=master&s=704647138ef760ac320f01d0eb40231f9a4082c3)](https://scrutinizer-ci.com/g/vend/pheat/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/vend/pheat/badges/quality-score.png?b=master&s=7f41f355e36b0f7a733a6291ecac525abc752ed8)](https://scrutinizer-ci.com/g/vend/pheat/?branch=master)
+[![Latest Stable Version](https://poser.pugx.org/vend/pheat/v/stable.svg)](https://packagist.org/packages/vend/pheat)
+[![Latest Unstable Version](https://poser.pugx.org/vend/pheat/v/unstable.svg)](https://packagist.org/packages/vend/pheat)
+[![License](https://poser.pugx.org/vend/pheat/license.svg)](https://packagist.org/packages/vend/pheat)
 
 Pheat is a simple implementation of a feature manager for PHP 5.4+. The main abstractions it uses are:
 
