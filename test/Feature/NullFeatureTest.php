@@ -9,8 +9,8 @@ class NullFeatureTest extends FeatureTest
     /**
      * @expectedException \Pheat\Exception\NullException
      */
-    public function testResolution()
+    public function testDefaultResolution()
     {
-        parent::testResolution();
+        parent::testDefaultResolution();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Pheat\Feature;
 
+use Pheat\ContextInterface;
 use Pheat\Provider\ProviderInterface;
 use Pheat\Status;
 
@@ -64,5 +65,22 @@ class Feature implements FeatureInterface
         }
 
         return $this;
+    }
+
+    public function configure(array $configuration)
+    {
+        if (isset($configuration['enabled'])) {
+            $this->status = $configuration['enabled'];
+        }
+    }
+
+    public function getConfiguration()
+    {
+        return ['enabled' => $this->status];
+    }
+
+    public function context(ContextInterface $context)
+    {
+        // does not use context
     }
 }

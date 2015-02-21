@@ -2,6 +2,7 @@
 
 namespace Pheat\Feature;
 
+use Pheat\ContextInterface;
 use Pheat\Provider\ProviderInterface;
 
 /**
@@ -21,6 +22,39 @@ interface FeatureInterface
      * @param ProviderInterface $provider The provider that gave the status of this feature
      */
     public function __construct($name, $status, ProviderInterface $provider);
+
+    /**
+     * Sets the feature as acting under the given context
+     *
+     * Just before a feature is resolved, the provider is suggested to notify every
+     * feature of the context. (This is not a requirement of the ProviderInterface, however,
+     * so Providers may choose not to provide one.)
+     *
+     * @param ContextInterface $context
+     * @return void
+     */
+    public function context(ContextInterface $context);
+
+    /**
+     * Configures the feature according to the given configuration
+     *
+     * Used by the provider to give complex status information, e.g. for variants
+     * and ratios.
+     *
+     * @param array $configuration
+     * @return void
+     */
+    public function configure(array $configuration);
+
+    /**
+     * Returns a configuration fragment representing the configuration (but not state) of the feature
+     *
+     * The configure() and toConfiguration() operations should be reflexive (i.e. after calling configure()
+     * with a given configuration, you should be able to obtain an exact copy from toConfiguration())
+     *
+     * @return array
+     */
+    public function getConfiguration();
 
     /**
      * Features must have a unique name
