@@ -3,6 +3,7 @@
 namespace Pheat\Feature;
 
 use Pheat\Provider\NullProvider;
+use Pheat\Provider\ProviderInterface;
 use Pheat\Status;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -64,12 +65,26 @@ class Set implements LoggerAwareInterface
 
     /**
      * @param string $name
-     * @param string $provider name
+     * @param ProviderInterface $provider
      * @return FeatureInterface|null
      */
-    public function getFeatureFromProvider($name, $provider)
+    public function getFeatureFromProvider($name, ProviderInterface $provider)
     {
-        return isset($this->all[$name][$provider]) ? $this->all[$name][$provider] : new NullFeature($name, null, new NullProvider($provider));
+        return isset($this->all[$name][$provider->getName()])
+            ? $this->all[$name][$provider->getName()]
+            : new NullFeature($name, null, $provider);
+    }
+
+    /**
+     * @param string $name
+     * @param string $providerName
+     * @return FeatureInterface|null
+     */
+    public function getFeatureFromProviderName($name, $providerName)
+    {
+        return isset($this->all[$name][$providerName])
+            ? $this->all[$name][$providerName]
+            : new NullFeature($name, null, new NullProvider($providerName));
     }
 
     /**
