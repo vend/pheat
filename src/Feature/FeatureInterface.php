@@ -52,7 +52,7 @@ interface FeatureInterface
      * The configure() and toConfiguration() operations should be reflexive (i.e. after calling configure()
      * with a given configuration, you should be able to obtain an exact copy from toConfiguration())
      *
-     * @return array
+     * @return array<string,mixed>
      */
     public function getConfiguration();
 

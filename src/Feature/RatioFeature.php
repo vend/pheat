@@ -46,7 +46,7 @@ class RatioFeature extends Feature
 
         $this->ratio     = isset($configuration['ratio']) ? floatval($configuration['ratio']) : 0.0;
         $this->vary      = isset($configuration['vary']) ? $configuration['vary'] : null;
-        $this->varyValue = rand(0, self::RESOLUTION);
+        $this->varyValue = (string)mt_rand(0, self::RESOLUTION); // default: if never supplied a context, unseeded ratio
     }
 
     /**
@@ -67,7 +67,7 @@ class RatioFeature extends Feature
      */
     public function context(ContextInterface $context)
     {
-        if ($this->vary) {
+        if (!empty($this->vary)) {
             $this->varyValue = $context->get($this->vary);
         }
     }
@@ -106,7 +106,7 @@ class RatioFeature extends Feature
     {
         $status = parent::getStatus();
 
-        if (!$status) {
+        if (empty($status)) {
             return $status;
         }
 

@@ -131,6 +131,7 @@ class ManagerTest extends Test
 
         $this->assertInternalType('array', $providers);
         $this->assertInstanceOf(ProviderInterface::class, $provider);
+        $this->assertNull($manager->getProvider('non-existant'));
     }
 
     public function testGetFeature()

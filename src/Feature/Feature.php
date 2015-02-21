@@ -74,6 +74,9 @@ class Feature implements FeatureInterface
         }
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     public function getConfiguration()
     {
         return ['enabled' => $this->status];
