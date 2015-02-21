@@ -7,6 +7,8 @@ use Pheat\Provider\NullProvider;
 use Pheat\Provider\ProviderInterface;
 
 /**
+ * The null feature
+ *
  * Used as a null object where no information is known about a feature being resolved
  */
 class NullFeature extends Feature

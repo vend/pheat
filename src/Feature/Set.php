@@ -9,6 +9,8 @@ use Psr\Log\NullLogger;
 
 /**
  * A set of features
+ *
+ * Used internally by the manager. Records the canonical provider for a feature.
  */
 class Set implements LoggerAwareInterface
 {

@@ -23,6 +23,8 @@ interface ProviderInterface
     public function getName();
 
     /**
+     * Get the status of features un
+     *
      * @param ContextInterface $context
      * @return FeatureInterface[]
      */

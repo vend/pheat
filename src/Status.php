@@ -13,7 +13,7 @@ namespace Pheat;
  * But in most cases, you want unknown features treated as off. For that, you can
  * just use regular old boolean comparisons. (null is falsish, don't ya know)
  */
-class Status
+abstract class Status
 {
     /**
      * "I do not know"
