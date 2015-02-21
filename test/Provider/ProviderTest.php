@@ -2,12 +2,10 @@
 
 namespace Pheat\Provider;
 
-use Pheat\Context;
 use Pheat\Feature\Feature;
 use Pheat\Feature\RatioFeature;
 use Pheat\Feature\VariantFeature;
 use Pheat\Test\Test;
-use ReflectionClass;
 
 class ProviderTest extends Test
 {

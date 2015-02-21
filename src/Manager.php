@@ -6,6 +6,7 @@ use Exception;
 use Pheat\Exception\LockedException;
 use Pheat\Feature\FeatureInterface;
 use Pheat\Feature\Set as FeatureSet;
+use Pheat\Provider\ContextProviderInterface;
 use Pheat\Provider\ProviderInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -89,6 +90,10 @@ class Manager implements LoggerAwareInterface
             array_push($this->providers, $provider);
         } else {
             array_splice($this->providers, $index, 0, [$provider]);
+        }
+
+        if ($provider instanceof ContextProviderInterface) {
+            $provider->inject($this->context);
         }
     }
 
