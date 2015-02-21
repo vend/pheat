@@ -2,6 +2,7 @@
 
 namespace Pheat;
 
+use Pheat\Feature\FeatureInterface;
 use Pheat\Provider\ProviderInterface;
 use Pheat\Test\Test;
 
@@ -120,12 +121,29 @@ class ManagerTest extends Test
 
     public function testGetProviders()
     {
-        $providers = [
+        $manager = $this->getManager(null, [
             $this->getMockProvider('a'),
             $this->getMockProvider('b')
-        ];
-        $manager = $this->getManager(null, $providers);
-        $this->assertEquals($providers, $manager->getProviders());
+        ]);
+
+        $providers = $manager->getProviders();
+        $provider  = $manager->getProvider('a');
+
+        $this->assertInternalType('array', $providers);
+        $this->assertInstanceOf(ProviderInterface::class, $provider);
+    }
+
+    public function testGetFeature()
+    {
+        $manager = $this->getManager(null, [
+            $this->getMockProvider('baz', ['foo' => true, 'bar' => false])
+        ]);
+
+        $foo = $manager->getFeature('foo');
+        $bar = $manager->getFeature('bar');
+
+        $this->assertInstanceOf(FeatureInterface::class, $foo);
+        $this->assertInstanceOf(FeatureInterface::class, $bar);
     }
 
     protected function assertBadProviderHandled(ProviderInterface $bad, $message = '')

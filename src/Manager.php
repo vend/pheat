@@ -27,7 +27,7 @@ class Manager implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     /**
-     * @var array<ProviderInterface>
+     * @var ProviderInterface[]
      */
     protected $providers = [];
 
@@ -133,6 +133,36 @@ class Manager implements LoggerAwareInterface
     public function getProviders()
     {
         return $this->providers;
+    }
+
+    /**
+     * Returns the first provider by a given name
+     *
+     * Note that it's possible to have more than one provider with a given name. Or to
+     * register the same provider twice in the ordered list or providers. If you want
+     * to deal with such issues, you're better off calling getProviders().
+     *
+     * @param string $name
+     * @return ProviderInterface|null
+     */
+    public function getProvider($name)
+    {
+        foreach ($this->providers as $provider) {
+            if ($provider->getName() === $name) {
+                return $provider;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param string $name
+     * @return FeatureInterface
+     */
+    public function getFeature($name)
+    {
+        return $this->getFeatureSet()->getFeature($name);
     }
 
     /**
