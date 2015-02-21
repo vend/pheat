@@ -4,7 +4,7 @@ namespace Pheat\Feature;
 
 use Pheat\Provider\ProviderInterface;
 
-class FeatureFactory
+class Factory
 {
     protected $types = [
         'variants' => VariantFeature::class,
@@ -29,6 +29,11 @@ class FeatureFactory
         }
 
         return $features;
+    }
+
+    public function toConfiguration(FeatureInterface $feature)
+    {
+        return $feature->getConfiguration();
     }
 
     /**

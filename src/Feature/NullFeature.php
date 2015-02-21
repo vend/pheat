@@ -2,50 +2,24 @@
 
 namespace Pheat\Feature;
 
+use Pheat\ContextInterface;
 use Pheat\Exception\NullException;
 use Pheat\Provider\NullProvider;
 use Pheat\Provider\ProviderInterface;
+use Pheat\Status;
+use Symfony\Component\Validator\Constraints\Null;
 
 /**
  * The null feature
  *
- * Used as a null object where no information is known about a feature being resolved
+ * Used as a null object where no information is known about
+ * a feature being resolved. Easier than dealing with null checking
+ * everywhere.
  */
 class NullFeature extends Feature
 {
-    private static $instance = null;
-
-    /**
-     * Cached as a single instance
-     *
-     * @return self
-     */
-    public static function get()
+    public function __construct($name, $_ignored = null, ProviderInterface $provider = null)
     {
-        return empty(self::$instance) ? (self::$instance = new self()) : self::$instance;
-    }
-
-    public function __construct($name = null, $status = null, ProviderInterface $provider = null)
-    {
-    }
-
-    public function getName()
-    {
-        return null;
-    }
-
-    public function getStatus()
-    {
-        return null;
-    }
-
-    public function getProvider()
-    {
-        return new NullProvider();
-    }
-
-    public function resolve(FeatureInterface $previous)
-    {
-        throw new NullException('Cannot resolve a null feature');
+        parent::__construct($name, Status::UNKNOWN, $provider ?: new NullProvider());
     }
 }

@@ -3,7 +3,7 @@
 namespace Pheat\Provider;
 
 use Pheat\ContextInterface;
-use Pheat\Feature\FeatureFactory;
+use Pheat\Feature\Factory;
 use Pheat\Feature\FeatureInterface;
 
 /**
@@ -11,7 +11,8 @@ use Pheat\Feature\FeatureInterface;
  *
  * The ProviderInterface requires nothing but a getFeatures() method. This abstract
  * base class further abstracts away support for storing multiple types of features
- * in a single configuration array/map/dict/hash.
+ * in a single configuration array/map/dict/hash, using a standard factory to convert
+ * configuration.
  */
 abstract class Provider implements ProviderInterface
 {
@@ -28,7 +29,7 @@ abstract class Provider implements ProviderInterface
      */
     public function getFeatures(ContextInterface $context)
     {
-        $factory = new FeatureFactory();
+        $factory = new Factory();
         $features = $factory->fromConfiguration($this->getConfiguration(), $this);
 
         foreach ($features as $feature) {
