@@ -34,11 +34,17 @@ class Context implements ContextInterface, ArrayAccess, IteratorAggregate
         return isset($this->attributes[$key]) ? $this->attributes[$key] : $default;
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     public function getAll()
     {
         return $this->attributes;
     }
 
+    /**
+     * @param array<string,mixed> $assoc
+     */
     public function setAll(array $assoc)
     {
         $this->attributes = $assoc;
