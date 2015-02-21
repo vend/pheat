@@ -2,6 +2,7 @@
 
 namespace Pheat\Test;
 
+use Pheat\Context;
 use Pheat\ContextInterface;
 use Pheat\Exception\TestException;
 use Pheat\Feature\FeatureInterface;
@@ -113,5 +114,23 @@ abstract class Test extends PHPUnit_Framework_TestCase
         $manager->setLogger($this->logger);
 
         return $manager;
+    }
+
+    /**
+     * @param array $contents
+     * @return ContextInterface
+     */
+    protected function getMockContext(array $contents = [])
+    {
+        /**
+         * @var Context $context
+         */
+        $context = $this->getMockBuilder(Context::class)
+            ->setMethods(null)
+            ->getMock();
+
+        $context->setAll($contents);
+
+        return $context;
     }
 }
