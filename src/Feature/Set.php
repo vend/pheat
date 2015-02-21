@@ -64,27 +64,37 @@ class Set implements LoggerAwareInterface
     }
 
     /**
-     * @param string $name
+     * @param string            $name
      * @param ProviderInterface $provider
-     * @return FeatureInterface|null
+     * @param null              $default
+     * @return null|FeatureInterface
      */
-    public function getFeatureFromProvider($name, ProviderInterface $provider)
+    public function getFeatureFromProvider($name, ProviderInterface $provider, $default = null)
     {
-        return isset($this->all[$name][$provider->getName()])
-            ? $this->all[$name][$provider->getName()]
-            : new NullFeature($name, null, $provider);
+        if ($default === null) {
+            $default = new NullFeature($name, null, $provider);
+        }
+
+        return $this->getFeatureFromProviderName($name, $provider->getName(), $default);
     }
 
     /**
      * @param string $name
      * @param string $providerName
-     * @return FeatureInterface|null
+     * @param null   $default
+     * @return null|FeatureInterface
      */
-    public function getFeatureFromProviderName($name, $providerName)
+    public function getFeatureFromProviderName($name, $providerName, $default = null)
     {
-        return isset($this->all[$name][$providerName])
-            ? $this->all[$name][$providerName]
-            : new NullFeature($name, null, new NullProvider($providerName));
+        if ($default === null) {
+            $default = new NullFeature($name, null, new NullProvider($providerName));
+        }
+
+        if (!isset($this->all[$name][$providerName])) {
+            return $default;
+        }
+
+        return $this->all[$name][$providerName];
     }
 
     /**

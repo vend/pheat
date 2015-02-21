@@ -41,12 +41,12 @@ class Factory
      *
      * Here, we dispatch configuration fragments to different types feature
      *
-     * @param string            $name
-     * @param array             $configuration
-     * @param ProviderInterface $provider
+     * @param string               $name
+     * @param array|int|bool|float $configuration
+     * @param ProviderInterface    $provider
      * @return FeatureInterface
      */
-    protected function singleFragment($name, array $configuration, ProviderInterface $provider)
+    public function singleFragment($name, $configuration, ProviderInterface $provider)
     {
         foreach ($this->types as $type => $class) {
             if (!empty($configuration[$type])) {

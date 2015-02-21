@@ -51,6 +51,11 @@ class Feature implements FeatureInterface
         return $this->status;
     }
 
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
     public function getProvider()
     {
         return $this->provider;
