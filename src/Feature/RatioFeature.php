@@ -50,7 +50,7 @@ class RatioFeature extends Feature
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getConfiguration()
     {
