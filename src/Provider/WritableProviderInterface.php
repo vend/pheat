@@ -8,7 +8,7 @@ use Pheat\Feature\FeatureInterface;
 /**
  * Additional interface implemented by providers that can write to a persistent store
  */
-interface WritableProviderInterface
+interface WritableProviderInterface extends ProviderInterface
 {
     /**
      * Set the feature to the enclosed status, under the given context

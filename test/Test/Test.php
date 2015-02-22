@@ -75,14 +75,16 @@ abstract class Test extends PHPUnit_Framework_TestCase
 
     /**
      * @param string $name
-     * @param array<string,bool|null>  $features
+     * @param array  $features <string,bool|null>  $features
+     * @param string $interface
      * @return ProviderInterface|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getMockProvider($name = 'test', $features = [])
+    protected function getMockProvider($name = 'test', $features = [], $interface = ProviderInterface::class)
     {
-        $mock = $this->getMockBuilder('Pheat\Provider\ProviderInterface')
+        $mock = $this->getMockBuilder($interface)
                      ->setMethods(['getName', 'getFeatures'])
                      ->getMockForAbstractClass();
+
 
         $mock->expects($this->any())
              ->method('getName')

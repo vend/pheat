@@ -64,9 +64,9 @@ class Set implements LoggerAwareInterface
     }
 
     /**
-     * @param string            $name
-     * @param ProviderInterface $provider
-     * @param null              $default
+     * @param string                $name
+     * @param ProviderInterface     $provider
+     * @param null|FeatureInterface $default
      * @return null|FeatureInterface
      */
     public function getFeatureFromProvider($name, ProviderInterface $provider, $default = null)

@@ -3,6 +3,7 @@
 namespace Pheat;
 
 use Pheat\Feature\FeatureInterface;
+use Pheat\Provider\ContextProviderInterface;
 use Pheat\Provider\ProviderInterface;
 use Pheat\Test\Test;
 
@@ -145,6 +146,18 @@ class ManagerTest extends Test
 
         $this->assertInstanceOf(FeatureInterface::class, $foo);
         $this->assertInstanceOf(FeatureInterface::class, $bar);
+    }
+
+    public function testContextProvider()
+    {
+        $context = $this->getMockContext([]);
+        $contextProvider = $this->getMockProvider('baz', ['foo' => true, 'bar' => false], ContextProviderInterface::class);
+
+        $contextProvider->expects($this->once())
+            ->method('inject')
+            ->with($this->equalTo($context));
+
+        $manager = $this->getManager($context, [$contextProvider]);
     }
 
     protected function assertBadProviderHandled(ProviderInterface $bad, $message = '')

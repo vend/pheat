@@ -51,11 +51,6 @@ class Feature implements FeatureInterface
         return $this->status;
     }
 
-    public function setStatus($status)
-    {
-        $this->status = $status;
-    }
-
     public function getProvider()
     {
         return $this->provider;
@@ -80,7 +75,7 @@ class Feature implements FeatureInterface
     }
 
     /**
-     * @return array<string,mixed>
+     * @return array<mixed>
      */
     public function getConfiguration()
     {

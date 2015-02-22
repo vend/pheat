@@ -10,7 +10,7 @@ use Pheat\ContextInterface;
  * Implement this interface if you want your provider to be able to add entries
  * to the context
  */
-interface ContextProviderInterface
+interface ContextProviderInterface extends ProviderInterface
 {
     /**
      * Inject values into the context

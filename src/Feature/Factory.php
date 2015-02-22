@@ -31,6 +31,10 @@ class Factory
         return $features;
     }
 
+    /**
+     * @param FeatureInterface $feature
+     * @return array
+     */
     public function toConfiguration(FeatureInterface $feature)
     {
         return $feature->getConfiguration();
