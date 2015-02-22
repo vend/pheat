@@ -50,20 +50,22 @@ class SetTest extends Test
 
     public function testGetFeatureFromProvider()
     {
+        $feature = $this->getMockFeature('something', true);
+
         $foo_a = $this->default->getFeatureFromProviderName('foo', 'a');
         $this->assertEquals($this->features['foo_a'], $foo_a);
 
-        $default = $this->default->getFeatureFromProviderName('foo', 'no-such', 'default');
-        $this->assertEquals('default', $default);
+        $default = $this->default->getFeatureFromProviderName('foo', 'no-such', $feature);
+        $this->assertEquals($feature, $default);
 
-        $default = $this->default->getFeatureFromProviderName('no-such', 'a', 'default');
-        $this->assertEquals('default', $default);
+        $default = $this->default->getFeatureFromProviderName('no-such', 'a', $feature);
+        $this->assertEquals($feature, $default);
 
         $foo_b = $this->default->getFeatureFromProvider('foo', $this->providers['b']);
         $this->assertEquals($this->features['foo_b'], $foo_b);
 
-        $default = $this->default->getFeatureFromProvider('no-such', $this->providers['b'], 'default');
-        $this->assertEquals('default', $default);
+        $default = $this->default->getFeatureFromProvider('no-such', $this->providers['b'], $feature);
+        $this->assertEquals($feature, $default);
     }
 
     public function testGetAll()

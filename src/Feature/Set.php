@@ -69,7 +69,7 @@ class Set implements LoggerAwareInterface
      * @param null|FeatureInterface $default
      * @return null|FeatureInterface
      */
-    public function getFeatureFromProvider($name, ProviderInterface $provider, $default = null)
+    public function getFeatureFromProvider($name, ProviderInterface $provider, FeatureInterface $default = null)
     {
         if ($default === null) {
             $default = new NullFeature($name, null, $provider);
@@ -81,10 +81,10 @@ class Set implements LoggerAwareInterface
     /**
      * @param string $name
      * @param string $providerName
-     * @param null   $default
+     * @param null|FeatureInterface $default
      * @return null|FeatureInterface
      */
-    public function getFeatureFromProviderName($name, $providerName, $default = null)
+    public function getFeatureFromProviderName($name, $providerName, FeatureInterface $default = null)
     {
         if ($default === null) {
             $default = new NullFeature($name, null, new NullProvider($providerName));
