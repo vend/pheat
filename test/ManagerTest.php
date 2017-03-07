@@ -20,7 +20,7 @@ class ManagerTest extends Test
     public function testAddProviderTypeHinting()
     {
         if (PHP_MAJOR_VERSION < 6) {
-            $this->expectException(\PHPUnit\Framework\Exception::class);
+            $this->expectException(\PHPUnit_Framework_Error::class);
         } else {
             $this->expectException(\TypeError::class);
         }
