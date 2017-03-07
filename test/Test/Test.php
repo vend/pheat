@@ -9,13 +9,14 @@ use Pheat\Feature\FeatureInterface;
 use Pheat\Manager;
 use Pheat\Provider\ProviderInterface;
 use Pheat\Status;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerAwareTrait;
 
 /**
  * Abstract base test class
  */
-abstract class Test extends PHPUnit_Framework_TestCase
+
+abstract class Test extends TestCase
 {
     use LoggerAwareTrait;
 

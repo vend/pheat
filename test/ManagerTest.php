@@ -18,7 +18,7 @@ class ManagerTest extends Test
     }
 
     /**
-     * @expectedException \PHPUnit_Framework_Error
+     * @expectedException \TypeError
      */
     public function testAddProviderTypeHinting()
     {

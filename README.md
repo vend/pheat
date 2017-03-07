@@ -1,6 +1,6 @@
 # Pheat
 
-## PHP 5.4+ Feature Manager
+## PHP 5.6+ Feature Manager
 
 [![Build Status](https://travis-ci.org/vend/pheat.svg?branch=master)](https://travis-ci.org/vend/pheat)
 [![Code Coverage](https://scrutinizer-ci.com/g/vend/pheat/badges/coverage.png?b=master&s=704647138ef760ac320f01d0eb40231f9a4082c3)](https://scrutinizer-ci.com/g/vend/pheat/?branch=master)
@@ -9,7 +9,7 @@
 [![Latest Unstable Version](https://poser.pugx.org/vend/pheat/v/unstable.svg)](https://packagist.org/packages/vend/pheat)
 [![License](https://poser.pugx.org/vend/pheat/license.svg)](https://packagist.org/packages/vend/pheat)
 
-Pheat is a simple implementation of a feature manager for PHP 5.4+. The main abstractions it uses are:
+Pheat is a simple implementation of a feature manager for PHP 5.6+. The main abstractions it uses are:
 
 * A `Provider` knows about the status of a list of `Feature` instances
 * A `Provider` can vary its list of features based on the `Context`
