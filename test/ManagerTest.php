@@ -17,11 +17,14 @@ class ManagerTest extends Test
         new Manager(null, [$this->getMockProvider()]);
     }
 
-    /**
-     * @expectedException \PHPUnit_Framework_Error
-     */
     public function testAddProviderTypeHinting()
     {
+        if (PHP_MAJOR_VERSION < 6) {
+            $this->expectException(\PHPUnit\Framework\Exception::class);
+        } else {
+            $this->expectException(\TypeError::class);
+        }
+
         $manager = $this->getManager();
         $manager->addProvider(new \stdClass());
     }
